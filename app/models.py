@@ -2,7 +2,10 @@ from app import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
+from markdown import markdown
+import bleach
 from . import login_manager
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -44,11 +47,24 @@ class Post(db.Model):
   title = db.Column(db.String(125), nullable=False)
   category = db.Column(db.String(100), nullable=False)
   content = db.Column(db.Text, nullable=False)
+  content_html = db.Column(db.Text)
   date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
   user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
   def __repr__(self):
-    return f"User('{self.title}', {self.category}, '{self.date_posted}')"
+    return f"Post('{self.title}', {self.category}, '{self.date_posted}')"
+
+#   @staticmethod
+#   def on_changed_content(target, value, oldvalue, initiator):
+#       allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+#                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+#                         'h1', 'h2', 'h3', 'p']
+#       target.content_html = bleach.linkify(bleach.clean(markdown(value, out_format='html'),
+#       tags=allowed_tags, strip=True))
+     
+
+
+# db.event.listen(Post.content, 'set', Post.on_changed_content)
 
   
 class Comment(db.Model):
@@ -61,5 +77,5 @@ class Comment(db.Model):
   post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
 
   def __repr__(self):
-    return f"User('{self.user_id}', '{self.comment}', {self.timestamp})"
+    return f"Comment('{self.user_id}', '{self.comment}', {self.timestamp})"
   

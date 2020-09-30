@@ -1,8 +1,57 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
-{% block content %}
+{% block page_content %}
 
-<h1>hello test</h1>
-  
+<div class="container">
+  <h1>New blog post </h1>
+    <div class="row">
+        <div class="col-lg-9 display-3">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+  </div>
+  <hr>
+
+
+  <div class="container-fluid text-center text-warning font-weight-light font-italic ">
+    <h2>quote for today..</h2>
+
+      <h3>by {{ daily_quotes.author }}</h3>
+      <h3> ...{{ daily_quotes.quote }}</h3>
+   
+  </div>
+  <hr>
+
+
+
+
+  <div class="container">
+    <h1>latest blog articles..</h1>
+    <div class="col-lg-12 ">
+      {% for post in posts.items %}
+      <h2> {{post.title}}</h2>
+      <h3>Author: {{post.user_id}}</h3>
+      <h3>{{post.category}}</h3>
+      <h3>{{post.content}}</h3>
+      <a href="/edit/{{post.id}}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Update</a>
+      <a href="/post/delete/{{post.id}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Delete</a>
+      <hr>
+      {% endfor %}
+      <br>
+      <hr>
+      {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if posts.page == page_num %}
+          <a class="btn btn-info btn-info mb-5" href="{{ url_for('main.home', page=page_num)}}">{{page_num}}</a>
+        {% else %}
+          <a class="btn btn-outline-info  mb-5" href="{{ url_for('main.home', page=page_num)}}">{{page_num}}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
+    </div>
+
+  </div>
 {% endblock %}
