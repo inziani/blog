@@ -22,8 +22,6 @@ class User(UserMixin, db.Model):
   image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
   password_hash = db.Column(db.String(80), nullable=False)
   posts = db.relationship('Post', backref='user', lazy='dynamic')
-  
-  
 
   @property
   def password(self):
@@ -54,17 +52,6 @@ class Post(db.Model):
   def __repr__(self):
     return f"Post('{self.title}', {self.category}, '{self.date_posted}')"
 
-#   @staticmethod
-#   def on_changed_content(target, value, oldvalue, initiator):
-#       allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
-#                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
-#                         'h1', 'h2', 'h3', 'p']
-#       target.content_html = bleach.linkify(bleach.clean(markdown(value, out_format='html'),
-#       tags=allowed_tags, strip=True))
-     
-
-
-# db.event.listen(Post.content, 'set', Post.on_changed_content)
 
   
 class Comment(db.Model):

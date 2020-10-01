@@ -48,47 +48,36 @@ def delete(posts_id):
   form = PostForm()
   return redirect(url_for('.home'))
 
-@main.route('/edit/<int:posts_id>', methods=['GET', 'POST'] )
+@main.route('/post/edit/<int:posts_id>', methods=['GET', 'POST'] )
 @login_required
 def edit(posts_id):
   form = PostForm()
-  post = Post.query.get_or_404(posts_id)
-  if form.validate_on_submit:
-    post.content = form.content.data
-    db.session.add(post)
-    flash('The post has been updated')
+  if request.method == 'POST':
+    post = Post.query.get_or_404(posts_id)
+    post.title = request.form.title
+    post.category = request.form.category
+    post.content = request.form.content
+    db.session.commit()
     return redirect(url_for('.home', posts_id=posts_id))
-  form.body.content = post.content
-  return render_template('edit.html', form=form)
+  else:
+    return render_template('edit.html')
   
 
-  @main.route('/post/<int:posts_id>', methods=['GET', ['POST']])
+  @main.route('/post/comment/<int:posts_id>', methods=['GET', 'POST'])
   @login_required
   def post_comment(posts_id):
     post = Post.query.get_or_404(id)
     form = CommentForm()
     if form.validate_on_submit():
-      comment = Comment(comment=form.comment.data, post_id=post_id, user_id=current_user.username)
+      comment = request.form.get('comment')
+      comment = Comment(comment=comment, posts_id=posts_id, user_id=current_user.username)
       db.session.add(comment)
       db.session.commit()
       flash('Your comment has been posted')
       return redirect(url_for('.post', posts_id=posts.id))
     comments = post.comment.query_all()
-    return render_template('comments.html', post=post, form=form, title='Comment')
+    return render_template('home.html', post=post, form=form, title='Comment')
 
-  @main.route('/user_account/<string:username>', methods=['GET', ['POST']])
-  @login_required
-  def user_account(username):
-    post = Post.query.get_or_404(username)
-    form = CommentForm()
-    if form.validate_on_submit():
-      comment = Comment(comment=form.comment.data, post_id=post_id, user_id=current_user.username)
-      db.session.add(comment)
-      db.session.commit()
-      flash('Your comment has been posted')
-      return redirect(url_for('.post', posts_id=posts.id))
-    comments = post.comment.query_all()
-    return render_template('comments.html', post=post, form=form, title='Comment')
 
   @main.route('/animals', methods=['GET', 'POST'])
   def animals():

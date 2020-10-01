@@ -9,13 +9,8 @@
 {% block page_content %}
 <div class="row">
   <div class="col-lg-9 display-3">
-      {{ wtf.quick_form(form) }}
+    <div> {{ wtf.quick_form(form) }}</div>
   </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-{{ super() }}
-{{ pagedown.include_pagedown() }} 
 {% endblock %}
 

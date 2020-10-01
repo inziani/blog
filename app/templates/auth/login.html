@@ -11,27 +11,12 @@
 {% block title %} myFarmingBlog - Login {% endblock%}
 
 {% block page_content %}
-    <div class="container-fluid">
-        <div class="row no-gutters">
-            <div class="col-lg-6 text-center p-0">
-                    <div class="card">
-                      <div class="card-body">
-                        <img style="width: 100%;" src="{{url_for('static', filename='/images/ngongone.jpg', _external=True) }}"}alt="">
-                            <div class="login-text">
-                                <h1 class="card-title carousel-caption">ALL THE AGRO-INFO YOU NEED TO SUCCEED</h1> <br>
-                                <p class="carousel-caption">Read and learn as much and succeed that much...</p>
-                            </div>
-                      </div>
-                    </div>
-            </div>
-            <div class="col-lg-6 display-4 bg-info">
+    <div class="container items-align-center bg-info">
                 <h1>login</h1>
                 {{ wtf.quick_form(form) }}
                 New user?
                 <small>
                 <a href="{{ url_for('auth.register') }}">Click here to register</a></small> 
-            </div>
-        </div>
     </div>
 {% endblock %}
 

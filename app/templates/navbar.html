@@ -15,10 +15,9 @@
           <ul class="nav navbar-nav">
               {% if current_user.is_authenticated %}
               <li><a href="{{url_for('main.home')}}">All</a></li>
-              <li><a href="{{url_for('.animals')}}">Animals</a></li>
+              <li><a href="#">Animals</a></li>
               <li><a href="#">Crops</a></li>
               <li><a href="#">Agribusiness</a></li>
-              <li><a href="{{url_for('main.new_post')}}">Post new blog</a></li>
               
               {% else %}
               <li><a href="#">All</a></li>
