@@ -66,7 +66,7 @@ def edit(posts_id):
   @main.route('/post/comment/<int:posts_id>', methods=['GET', 'POST'])
   @login_required
   def post_comment(posts_id):
-    post = Post.query.get_or_404(id)
+    post = Post.query.get_or_404(posts_id)
     form = CommentForm()
     if form.validate_on_submit():
       comment = request.form.get('comment')
